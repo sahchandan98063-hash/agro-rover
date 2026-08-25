@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AgroRover - Smart Farming</title>
+
+
+    <style>
+
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #f4f7f5;
+        }
+
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            min-height: 100vh;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+        }
+
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .left-side {
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    rgba(20, 107, 63, 0.70),
+                    rgba(20, 107, 63, 0.80)
+                ),
+                url("https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80");
+
+            background-size: cover;
+
+            background-position: center;
+
+            color: white;
+        }
+
+
+        .left-content {
+
+            min-height: 100vh;
+
+            padding: 60px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        .logo {
+
+            position: absolute;
+
+            top: 40px;
+            left: 60px;
+
+            font-size: 25px;
+
+            font-weight: bold;
+        }
+
+
+        .left-content h1 {
+
+            font-size: 50px;
+
+            line-height: 1.15;
+
+            margin-bottom: 20px;
+        }
+
+
+        .left-content p {
+
+            max-width: 480px;
+
+            line-height: 1.7;
+
+            font-size: 16px;
+        }
+
+
+        .features {
+
+            margin-top: 30px;
+        }
+
+
+        .features p {
+
+            margin: 12px 0;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .right-side {
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+
+        .form-container {
+
+            width: 100%;
+
+            max-width: 420px;
+        }
+
+
+        /* =========================
+           TABS
+        ========================= */
+
+        .tabs {
+
+            display: flex;
+
+            margin-bottom: 30px;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .tab {
+
+            flex: 1;
+
+            padding: 14px;
+
+            border: none;
+
+            background: none;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            color: #777;
+        }
+
+
+        .tab.active {
+
+            color: #1f8f55;
+
+            font-weight: bold;
+
+            border-bottom: 3px solid #1f8f55;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form {
+
+            display: none;
+        }
+
+
+        .form.active {
+
+            display: block;
+        }
+
+
+        .form h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           LABEL
+        ========================= */
+
+        label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+
+            color: #333;
+        }
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 17px;
+
+            border: 1px solid #d9e0dc;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+
+        input:focus {
+
+            border-color: #1f8f55;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(31, 143, 85, 0.10);
+        }
+
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .password-box {
+
+            position: relative;
+        }
+
+
+        .password-box input {
+
+            padding-right: 45px;
+        }
+
+
+        .eye {
+
+            position: absolute;
+
+            right: 10px;
+
+            top: 7px;
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .options {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .remember {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-weight: normal;
+
+            color: #777;
+        }
+
+
+        .remember input {
+
+            width: auto;
+
+            margin: 0;
+        }
+
+
+        .forgot {
+
+            color: #1f8f55;
+
+            text-decoration: none;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .main-button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1f8f55;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .main-button:hover {
+
+            background: #146b3f;
+        }
+
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .divider {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 23px 0;
+
+            color: #999;
+
+            font-size: 11px;
+        }
+
+
+        .divider::before,
+        .divider::after {
+
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #ddd;
+        }
+
+
+        /* =========================
+           GOOGLE BUTTON
+        ========================= */
+
+        .google {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           TERMS
+        ========================= */
+
+        .terms {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .terms input {
+
+            width: auto;
+
+            margin: 0;
+        }
+
+
+        .terms label {
+
+            margin: 0;
+
+            font-weight: normal;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .container {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .left-side {
+
+                display: none;
+            }
+
+
+            .right-side {
+
+                min-height: 100vh;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         LEFT SIDE
+    ========================== -->
+
+    <div class="left-side">
+
+        <div class="logo">
+            🌱 AgroRover
+        </div>
+
+
+        <div class="left-content">
+
+            <h1>
+                Smart Farming.<br>
+                Smarter Future.
+            </h1>
+
+
+            <p>
+                Monitor your farm, control your
+                agricultural rover and manage
+                your crops from one intelligent
+                platform.
+            </p>
+
+
+            <div class="features">
+
+                <p>✓ Live Farm Monitoring</p>
+
+                <p>✓ Smart Rover Control</p>
+
+                <p>✓ Crop Health Monitoring</p>
+
+                <p>✓ Real-Time Alerts</p>
+
+                <p>✓ Farm Reports</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RIGHT SIDE
+    ========================== -->
+
+    <div class="right-side">
+
+
+        <div class="form-container">
+
+
+            <!-- TABS -->
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    id="loginTab"
+                    onclick="showLogin()">
+
+                    Login
+
+                </button>
+
+
+                <button
+                    class="tab"
+                    id="signupTab"
+                    onclick="showSignup()">
+
+                    Sign Up
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =========================
+                 LOGIN FORM
+            ========================== -->
+
+            <div
+                class="form active"
+                id="loginForm">
+
+
+                <h2>
+                    Welcome Back 👋
+                </h2>
+
+
+                <p class="subtitle">
+                    Login to manage your smart farm
+                </p>
+
+
+                <form
+                    onsubmit="login(event)">
+
+
+                    <label>
+                        Email Address
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="eye"
+                            onclick="togglePassword('loginPassword')">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="options">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox">
+
+                            Remember me
+
+                        </label>
+
+
+                        <a
+                            href="#"
+                            class="forgot">
+
+                            Forgot Password?
+
+                        </a>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="main-button">
+
+                        Login
+
+                    </button>
+
+                </form>
+
+
+                <div class="divider">
+                    OR
+                </div>
+
+
+                <button class="google">
+                    🔵 Continue with Google
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 SIGNUP FORM
+            ========================== -->
+
+            <div
+                class="form"
+                id="signupForm">
+
+
+                <h2>
+                    Create Account
+                </h2>
+
+
+                <p class="subtitle">
+                    Join AgroRover and manage your farm
+                </p>
+
+
+                <form
+                    onsubmit="signup(event)">
+
+
+                    <label>
+                        Full Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+
+                    <label>
+                        Email Address
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+
+                    <label>
+                        Phone Number
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                        required
+                    >
+
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            placeholder="Create a password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="eye"
+                            onclick="togglePassword('signupPassword')">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="eye"
+                            onclick="togglePassword('confirmPassword')">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+
+                        <label>
+                            I agree to the Terms & Conditions
+                        </label>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="main-button">
+
+                        Create Account
+
+                    </button>
+
+                </form>
+
+
+                <div class="divider">
+                    OR
+                </div>
+
+
+                <button class="google">
+                    🔵 Continue with Google
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    /* =========================
+       SHOW LOGIN
+    ========================== */
+
+    function showLogin() {
+
+        document
+            .getElementById("loginForm")
+            .classList.add("active");
+
+        document
+            .getElementById("signupForm")
+            .classList.remove("active");
+
+
+        document
+            .getElementById("loginTab")
+            .classList.add("active");
+
+        document
+            .getElementById("signupTab")
+            .classList.remove("active");
+    }
+
+
+
+    /* =========================
+       SHOW SIGNUP
+    ========================== */
+
+    function showSignup() {
+
+        document
+            .getElementById("signupForm")
+            .classList.add("active");
+
+        document
+            .getElementById("loginForm")
+            .classList.remove("active");
+
+
+        document
+            .getElementById("signupTab")
+            .classList.add("active");
+
+        document
+            .getElementById("loginTab")
+            .classList.remove("active");
+    }
+
+
+
+    /* =========================
+       PASSWORD SHOW/HIDE
+    ========================== */
+
+    function togglePassword(id) {
+
+        const password =
+            document.getElementById(id);
+
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+        } else {
+
+            password.type = "password";
+        }
+    }
+
+
+
+    /* =========================
+       SIGNUP
+    ========================== */
+
+    function signup(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document.getElementById("name").value.trim();
+
+        const email =
+            document.getElementById("signupEmail").value.trim();
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const password =
+            document.getElementById("signupPassword").value;
+
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+
+        if (password.length < 6) {
+
+            alert(
+                "Password must contain at least 6 characters."
+            );
+
+            return;
+        }
+
+
+        if (password !== confirmPassword) {
+
+            alert(
+                "Passwords do not match."
+            );
+
+            return;
+        }
+
+
+        localStorage.setItem(
+            "agroRoverName",
+            name
+        );
+
+        localStorage.setItem(
+            "agroRoverEmail",
+            email
+        );
+
+        localStorage.setItem(
+            "agroRoverPhone",
+            phone
+        );
+
+
+        alert(
+            "Account created successfully! 🌱"
+        );
+
+
+        showLogin();
+    }
+
+
+
+    /* =========================
+       LOGIN
+    ========================== */
+
+    function login(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document.getElementById("loginEmail").value.trim();
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+
+        if (email === "" || password === "") {
+
+            alert(
+                "Please enter email and password."
+            );
+
+            return;
+        }
+
+
+        localStorage.setItem(
+            "agroRoverLoggedIn",
+            "true"
+        );
+
+
+        localStorage.setItem(
+            "agroRoverUser",
+            email
+        );
+
+
+        alert(
+            "Login successful! 🌱"
+        );
+
+
+        /*
+          Change this to your dashboard file.
+          Example:
+          window.location.href = "dashboard.html";
+        */
+
+        window.location.href =
+            "dashboard.html";
+    }
+
+</script>
+
+
+</body>
+
+</html>

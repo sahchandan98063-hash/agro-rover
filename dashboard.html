@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AgroRover Dashboard</title>
+
+
+    <style>
+
+        /* =====================================
+           RESET
+        ===================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+
+            background: #f4f7f5;
+
+            color: #17221b;
+
+            min-height: 100vh;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =====================================
+           LAYOUT
+        ===================================== */
+
+        .app {
+            display: flex;
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================
+           SIDEBAR
+        ===================================== */
+
+        .sidebar {
+
+            width: 250px;
+
+            background: #17221b;
+
+            color: white;
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            bottom: 0;
+
+            padding: 25px 15px;
+
+            z-index: 1000;
+        }
+
+
+        .logo {
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            padding: 0 15px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .logo span {
+            color: #65c18c;
+        }
+
+
+        .menu-title {
+
+            color: #7f8b83;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            padding: 0 15px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .nav {
+
+            list-style: none;
+        }
+
+
+        .nav li {
+
+            margin-bottom: 5px;
+        }
+
+
+        .nav button {
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #c6cec9;
+
+            text-align: left;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        .nav button:hover {
+
+            background: #26352c;
+
+            color: white;
+        }
+
+
+        .nav button.active {
+
+            background: #1f8f55;
+
+            color: white;
+        }
+
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+
+            right: 15px;
+        }
+
+
+        .logout button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background: #2a342e;
+
+            color: #ddd;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================
+           MAIN
+        ===================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            width: calc(100% - 250px);
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================
+           TOPBAR
+        ===================================== */
+
+        .topbar {
+
+            height: 75px;
+
+            background: white;
+
+            border-bottom: 1px solid #e1e6e3;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .page-title h1 {
+
+            font-size: 22px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .page-title p {
+
+            color: #7a857e;
+
+            font-size: 12px;
+        }
+
+
+        .user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .notification {
+
+            border: none;
+
+            background: #f1f4f2;
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 17px;
+        }
+
+
+        .avatar {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #1f8f55;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+
+        .user-name {
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        .user-role {
+
+            font-size: 11px;
+
+            color: #7a857e;
+        }
+
+
+        /* =====================================
+           CONTENT
+        ===================================== */
+
+        .content {
+
+            padding: 30px;
+        }
+
+
+        /* =====================================
+           WELCOME
+        ===================================== */
+
+        .welcome {
+
+            background: #1f8f55;
+
+            color: white;
+
+            border-radius: 14px;
+
+            padding: 25px 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .welcome h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .welcome p {
+
+            font-size: 13px;
+
+            opacity: 0.85;
+        }
+
+
+        .date {
+
+            background: rgba(255,255,255,0.15);
+
+            padding: 10px 15px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================
+           STAT CARDS
+        ===================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e4e9e6;
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+
+        .stat-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eaf5ef;
+
+            border-radius: 9px;
+
+            font-size: 19px;
+        }
+
+
+        .status {
+
+            font-size: 10px;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            background: #eaf7ef;
+
+            color: #1f8f55;
+        }
+
+
+        .status.warning {
+
+            background: #fff4df;
+
+            color: #b87912;
+        }
+
+
+        .stat-card h3 {
+
+            font-size: 25px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .stat-card p {
+
+            color: #7a857e;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================
+           GRID
+        ===================================== */
+
+        .dashboard-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            border: 1px solid #e4e9e6;
+
+            border-radius: 12px;
+
+            padding: 20px;
+        }
+
+
+        .card-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+
+        .card-header h3 {
+
+            font-size: 16px;
+        }
+
+
+        .view-btn {
+
+            border: none;
+
+            background: transparent;
+
+            color: #1f8f55;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================
+           FARM MAP
+        ===================================== */
+
+        .map {
+
+            height: 330px;
+
+            border-radius: 10px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #d7ebc9,
+                    #b9dca8
+                );
+        }
+
+
+        .field {
+
+            position: absolute;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #76a95d 0px,
+                    #76a95d 20px,
+                    #6b9d52 21px,
+                    #6b9d52 40px
+                );
+
+            border-radius: 12px;
+
+            opacity: 0.9;
+        }
+
+
+        .field.one {
+
+            width: 40%;
+
+            height: 55%;
+
+            left: 7%;
+
+            top: 12%;
+
+            transform: rotate(-5deg);
+        }
+
+
+        .field.two {
+
+            width: 38%;
+
+            height: 55%;
+
+            right: 7%;
+
+            top: 10%;
+
+            transform: rotate(5deg);
+        }
+
+
+        .field.three {
+
+            width: 60%;
+
+            height: 35%;
+
+            left: 20%;
+
+            bottom: 5%;
+
+            transform: rotate(-2deg);
+        }
+
+
+        .rover {
+
+            position: absolute;
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #17221b;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            border: 4px solid white;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.25);
+
+            left: 47%;
+
+            top: 45%;
+
+            z-index: 5;
+
+            animation: moveRover 4s infinite alternate;
+        }
+
+
+        @keyframes moveRover {
+
+            from {
+                transform: translate(0,0);
+            }
+
+            to {
+                transform: translate(35px,-20px);
+            }
+        }
+
+
+        .map-label {
+
+            position: absolute;
+
+            bottom: 12px;
+
+            left: 12px;
+
+            background: rgba(255,255,255,0.9);
+
+            padding: 7px 10px;
+
+            border-radius: 6px;
+
+            font-size: 10px;
+
+            color: #344039;
+        }
+
+
+        /* =====================================
+           ROVER STATUS
+        ===================================== */
+
+        .rover-status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            background: #f4f8f5;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .rover-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 10px;
+
+            background: #17221b;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 24px;
+        }
+
+
+        .rover-info h4 {
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .online {
+
+            color: #1f8f55;
+
+            font-size: 11px;
+        }
+
+
+        .online::before {
+
+            content: "●";
+
+            margin-right: 5px;
+        }
+
+
+        /* =====================================
+           ROVER CONTROLS
+        ===================================== */
+
+        .controls {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 9px;
+        }
+
+
+        .control-btn {
+
+            padding: 11px;
+
+            border: 1px solid #dce3df;
+
+            background: white;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+
+        .control-btn:hover {
+
+            background: #eaf5ef;
+
+            border-color: #1f8f55;
+        }
+
+
+        .control-btn.start {
+
+            background: #1f8f55;
+
+            color: white;
+
+            border-color: #1f8f55;
+        }
+
+
+        .control-btn.stop {
+
+            background: #fff0f0;
+
+            color: #c73b3b;
+
+            border-color: #f0caca;
+        }
+
+
+        /* =====================================
+           CROP HEALTH
+        ===================================== */
+
+        .crop {
+
+            margin-bottom: 18px;
+        }
+
+
+        .crop-info {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .progress {
+
+            height: 7px;
+
+            background: #e8eeea;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .progress-bar {
+
+            height: 100%;
+
+            background: #1f8f55;
+
+            border-radius: 20px;
+        }
+
+
+        .progress-bar.warning {
+
+            background: #e0a12c;
+        }
+
+
+        /* =====================================
+           TASKS
+        ===================================== */
+
+        .task {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid #edf0ee;
+        }
+
+
+        .task:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .task-left {
+
+            display: flex;
+
+            gap: 10px;
+
+            align-items: center;
+        }
+
+
+        .task-icon {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 7px;
+
+            background: #edf6f0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .task h4 {
+
+            font-size: 12px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .task p {
+
+            color: #89928d;
+
+            font-size: 10px;
+        }
+
+
+        .task-status {
+
+            font-size: 9px;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            background: #eaf7ef;
+
+            color: #1f8f55;
+        }
+
+
+        .task-status.pending {
+
+            background: #fff4df;
+
+            color: #b87912;
+        }
+
+
+        /* =====================================
+           ALERTS
+        ===================================== */
+
+        .alert {
+
+            display: flex;
+
+            gap: 12px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: #fff8e9;
+
+            margin-bottom: 10px;
+        }
+
+
+        .alert-icon {
+
+            font-size: 17px;
+        }
+
+
+        .alert h4 {
+
+            font-size: 12px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .alert p {
+
+            font-size: 10px;
+
+            color: #8a806d;
+
+            line-height: 1.5;
+        }
+
+
+        .alert.success {
+
+            background: #edf8f1;
+        }
+
+
+        /* =====================================
+           SECTIONS
+        ===================================== */
+
+        .section {
+
+            display: none;
+        }
+
+
+        .section.active {
+
+            display: block;
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .dashboard-grid {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+
+                width: 70px;
+
+                padding: 20px 8px;
+            }
+
+
+            .logo {
+
+                font-size: 0;
+
+                text-align: center;
+
+                padding: 0;
+            }
+
+
+            .logo span {
+
+                display: none;
+            }
+
+
+            .nav button {
+
+                font-size: 0;
+
+                text-align: center;
+            }
+
+
+            .nav button::first-letter {
+
+                font-size: 18px;
+            }
+
+
+            .menu-title {
+
+                display: none;
+            }
+
+
+            .logout button {
+
+                font-size: 0;
+            }
+
+
+            .main {
+
+                margin-left: 70px;
+
+                width: calc(100% - 70px);
+            }
+
+
+            .content {
+
+                padding: 15px;
+            }
+
+
+            .topbar {
+
+                padding: 0 15px;
+            }
+
+
+            .user-name,
+            .user-role {
+
+                display: none;
+            }
+
+
+            .welcome {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+
+            🌱 Agro<span>Rover</span>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+
+        <ul class="nav">
+
+            <li>
+
+                <button
+                    class="active"
+                    onclick="showSection('dashboard', this)">
+
+                    🏠 Dashboard
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('map', this)">
+
+                    🗺️ Farm Map
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('rover', this)">
+
+                    🤖 Rover Control
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('tasks', this)">
+
+                    📋 Tasks
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('crop', this)">
+
+                    🌱 Crop Health
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('alerts', this)">
+
+                    ⚠️ Alerts
+
+                </button>
+
+            </li>
+
+
+            <li>
+
+                <button
+                    onclick="showSection('reports', this)">
+
+                    📊 Reports
+
+                </button>
+
+            </li>
+
+        </ul>
+
+
+        <div class="logout">
+
+            <button onclick="logout()">
+
+                🚪 Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =================================
+         MAIN
+    ================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="page-title">
+
+                <h1 id="pageTitle">
+                    Farm Dashboard
+                </h1>
+
+                <p>
+                    Monitor your farm and rover
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+
+                <button
+                    class="notification"
+                    onclick="showAlert()">
+
+                    🔔
+
+                </button>
+
+
+                <div class="avatar">
+                    F
+                </div>
+
+
+                <div>
+
+                    <div class="user-name">
+                        Farmer
+                    </div>
+
+                    <div class="user-role">
+                        Farm Owner
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- =================================
+                 DASHBOARD SECTION
+            ================================== -->
+
+            <section
+                id="dashboard"
+                class="section active">
+
+
+                <div class="welcome">
+
+                    <div>
+
+                        <h2>
+                            Good Evening, Farmer 👋
+                        </h2>
+
+                        <p>
+                            Here's what's happening
+                            on your farm today.
+                        </p>
+
+                    </div>
+
+
+                    <div class="date">
+
+                        📅
+                        <span id="currentDate">
+                            Today
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon">
+                                🌾
+                            </div>
+
+                            <span class="status">
+                                Healthy
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            12.5
+                        </h3>
+
+                        <p>
+                            Farm Area (Acres)
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon">
+                                🤖
+                            </div>
+
+                            <span class="status">
+                                Online
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            87%
+                        </h3>
+
+                        <p>
+                            Rover Battery
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon">
+                                🌱
+                            </div>
+
+                            <span class="status">
+                                Good
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            92%
+                        </h3>
+
+                        <p>
+                            Crop Health
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon">
+                                📋
+                            </div>
+
+                            <span class="status warning">
+                                2 Pending
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            8
+                        </h3>
+
+                        <p>
+                            Completed Tasks
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DASHBOARD GRID -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- MAP -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h3>
+                                🗺️ Live Farm Map
+                            </h3>
+
+                            <button
+                                class="view-btn"
+                                onclick="showSectionById('map')">
+
+                                View Full Map →
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="map">
+
+                            <div class="field one"></div>
+
+                            <div class="field two"></div>
+
+                            <div class="field three"></div>
+
+
+                            <div class="rover">
+                                🤖
+                            </div>
+
+
+                            <div class="map-label">
+                                📍 Rover currently working
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ROVER -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h3>
+                                🤖 Rover Status
+                            </h3>
+
+                        </div>
+
+
+                        <div class="rover-status">
+
+                            <div class="rover-icon">
+                                🤖
+                            </div>
+
+
+                            <div class="rover-info">
+
+                                <h4>
+                                    AgroRover-01
+                                </h4>
+
+                                <span
+                                    class="online"
+                                    id="roverStatus">
+
+                                    Online • Working
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="controls">
+
+                            <button
+                                class="control-btn start"
+                                onclick="startRover()">
+
+                                ▶ Start
+
+                            </button>
+
+
+                            <button
+                                class="control-btn"
+                                onclick="pauseRover()">
+
+                                ⏸ Pause
+
+                            </button>
+
+
+                            <button
+                                class="control-btn"
+                                onclick="returnHome()">
+
+                                🏠 Return Home
+
+                            </button>
+
+
+                            <button
+                                class="control-btn stop"
+                                onclick="stopRover()">
+
+                                ⏹ Stop
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- SECOND ROW -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- CROP HEALTH -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h3>
+                                🌱 Crop Health
+                            </h3>
+
+                            <button
+                                class="view-btn"
+                                onclick="showSectionById('crop')">
+
+                                View Details →
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="crop">
+
+                            <div class="crop-info">
+
+                                <span>
+                                    Paddy Field A
+                                </span>
+
+                                <strong>
+                                    94%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    style="width:94%">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="crop">
+
+                            <div class="crop-info">
+
+                                <span>
+                                    Paddy Field B
+                                </span>
+
+                                <strong>
+                                    88%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    style="width:88%">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="crop">
+
+                            <div class="crop-info">
+
+                                <span>
+                                    Paddy Field C
+                                </span>
+
+                                <strong>
+                                    72%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar warning"
+                                    style="width:72%">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- TASKS -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h3>
+                                📋 Today's Tasks
+                            </h3>
+
+                            <button
+                                class="view-btn"
+                                onclick="showSectionById('tasks')">
+
+                                View All →
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div class="task-left">
+
+                                <div class="task-icon">
+                                    💧
+                                </div>
+
+                                <div>
+
+                                    <h4>
+                                        Check Irrigation
+                                    </h4>
+
+                                    <p>
+                                        Field A • 10:00 AM
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="task-status">
+                                Done
+                            </span>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div class="task-left">
+
+                                <div class="task-icon">
+                                    🌱
+                                </div>
+
+                                <div>
+
+                                    <h4>
+                                        Crop Inspection
+                                    </h4>
+
+                                    <p>
+                                        Field B • 2:00 PM
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="task-status pending">
+                                Pending
+                            </span>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div class="task-left">
+
+                                <div class="task-icon">
+                                    🔍
+                                </div>
+
+                                <div>
+
+                                    <h4>
+                                        Soil Monitoring
+                                    </h4>
+
+                                    <p>
+                                        Field C • 4:00 PM
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="task-status pending">
+                                Pending
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 MAP SECTION
+            ================================== -->
+
+            <section
+                id="map"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            🗺️ Live Farm Map
+                        </h3>
+
+                        <span class="status">
+                            🟢 Rover Online
+                        </span>
+
+                    </div>
+
+
+                    <div class="map"
+                         style="height:550px">
+
+                        <div class="field one"></div>
+
+                        <div class="field two"></div>
+
+                        <div class="field three"></div>
+
+                        <div class="rover">
+                            🤖
+                        </div>
+
+
+                        <div class="map-label">
+                            📍 AgroRover-01
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 ROVER SECTION
+            ================================== -->
+
+            <section
+                id="rover"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            🤖 Rover Control Center
+                        </h3>
+
+                        <span class="status">
+                            Online
+                        </span>
+
+                    </div>
+
+
+                    <div class="rover-status">
+
+                        <div class="rover-icon">
+                            🤖
+                        </div>
+
+                        <div class="rover-info">
+
+                            <h4>
+                                AgroRover-01
+                            </h4>
+
+                            <span
+                                class="online"
+                                id="roverStatus2">
+
+                                Online • Ready
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="controls">
+
+                        <button
+                            class="control-btn start"
+                            onclick="startRover()">
+
+                            ▶ Start Rover
+
+                        </button>
+
+
+                        <button
+                            class="control-btn"
+                            onclick="pauseRover()">
+
+                            ⏸ Pause Rover
+
+                        </button>
+
+
+                        <button
+                            class="control-btn"
+                            onclick="returnHome()">
+
+                            🏠 Return Home
+
+                        </button>
+
+
+                        <button
+                            class="control-btn stop"
+                            onclick="stopRover()">
+
+                            ⏹ Stop Rover
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 TASKS
+            ================================== -->
+
+            <section
+                id="tasks"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            📋 Rover Tasks
+                        </h3>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-left">
+
+                            <div class="task-icon">
+                                💧
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Irrigation Inspection
+                                </h4>
+
+                                <p>
+                                    Field A • Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="task-status">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-left">
+
+                            <div class="task-icon">
+                                🌱
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Crop Inspection
+                                </h4>
+
+                                <p>
+                                    Field B • Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="task-status pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-left">
+
+                            <div class="task-icon">
+                                🔍
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Soil Monitoring
+                                </h4>
+
+                                <p>
+                                    Field C • Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="task-status pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 CROP HEALTH
+            ================================== -->
+
+            <section
+                id="crop"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            🌱 Crop Health Monitoring
+                        </h3>
+
+                    </div>
+
+
+                    <div class="crop">
+
+                        <div class="crop-info">
+
+                            <span>
+                                Paddy Field A
+                            </span>
+
+                            <strong>
+                                94%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:94%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+
+                    <div class="crop">
+
+                        <div class="crop-info">
+
+                            <span>
+                                Paddy Field B
+                            </span>
+
+                            <strong>
+                                88%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:88%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+
+                    <div class="crop">
+
+                        <div class="crop-info">
+
+                            <span>
+                                Paddy Field C
+                            </span>
+
+                            <strong>
+                                72%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar warning"
+                                style="width:72%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 ALERTS
+            ================================== -->
+
+            <section
+                id="alerts"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            ⚠️ Alerts & Notifications
+                        </h3>
+
+                    </div>
+
+
+                    <div class="alert">
+
+                        <div class="alert-icon">
+                            ⚠️
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Low Soil Moisture
+                            </h4>
+
+                            <p>
+                                Paddy Field C requires
+                                irrigation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert success">
+
+                        <div class="alert-icon">
+                            ✅
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Rover Task Completed
+                            </h4>
+
+                            <p>
+                                AgroRover-01 completed
+                                Field A inspection.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================
+                 REPORTS
+            ================================== -->
+
+            <section
+                id="reports"
+                class="section">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            📊 Farm Reports
+                        </h3>
+
+                    </div>
+
+
+                    <div class="stats">
+
+
+                        <div class="stat-card">
+
+                            <h3>
+                                92%
+                            </h3>
+
+                            <p>
+                                Average Crop Health
+                            </p>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <h3>
+                                8
+                            </h3>
+
+                            <p>
+                                Completed Tasks
+                            </p>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <h3>
+                                14.2 km
+                            </h3>
+
+                            <p>
+                                Rover Distance
+                            </p>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <h3>
+                                6.5 hrs
+                            </h3>
+
+                            <p>
+                                Rover Working Time
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+    /* =====================================
+       NAVIGATION
+    ===================================== */
+
+    function showSection(sectionId, button) {
+
+        const sections =
+            document.querySelectorAll(".section");
+
+
+        sections.forEach(section => {
+
+            section.classList.remove("active");
+
+        });
+
+
+        const selected =
+            document.getElementById(sectionId);
+
+
+        if (selected) {
+
+            selected.classList.add("active");
+
+        }
+
+
+        const buttons =
+            document.querySelectorAll(".nav button");
+
+
+        buttons.forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+        if (button) {
+
+            button.classList.add("active");
+
+        }
+
+
+        const titles = {
+
+            dashboard: "Farm Dashboard",
+
+            map: "Live Farm Map",
+
+            rover: "Rover Control",
+
+            tasks: "Rover Tasks",
+
+            crop: "Crop Health",
+
+            alerts: "Alerts & Notifications",
+
+            reports: "Farm Reports"
+
+        };
+
+
+        document.getElementById("pageTitle")
+            .textContent =
+            titles[sectionId];
+
+    }
+
+
+
+    /* =====================================
+       VIEW SECTION
+    ===================================== */
+
+    function showSectionById(sectionId) {
+
+        const buttons =
+            document.querySelectorAll(".nav button");
+
+
+        let selectedButton = null;
+
+
+        buttons.forEach(button => {
+
+            if (
+                button.getAttribute("onclick")
+                    .includes(sectionId)
+            ) {
+
+                selectedButton = button;
+
+            }
+
+        });
+
+
+        showSection(
+            sectionId,
+            selectedButton
+        );
+
+    }
+
+
+
+    /* =====================================
+       ROVER
+    ===================================== */
+
+    function startRover() {
+
+        document
+            .querySelectorAll(".online")
+            .forEach(element => {
+
+                element.textContent =
+                    "Online • Working";
+
+            });
+
+
+        showNotification(
+            "🤖 Rover started successfully"
+        );
+
+    }
+
+
+
+    function pauseRover() {
+
+        document
+            .querySelectorAll(".online")
+            .forEach(element => {
+
+                element.textContent =
+                    "Online • Paused";
+
+            });
+
+
+        showNotification(
+            "⏸ Rover paused"
+        );
+
+    }
+
+
+
+    function stopRover() {
+
+        document
+            .querySelectorAll(".online")
+            .forEach(element => {
+
+                element.textContent =
+                    "Online • Stopped";
+
+            });
+
+
+        showNotification(
+            "⏹ Rover stopped"
+        );
+
+    }
+
+
+
+    function returnHome() {
+
+        document
+            .querySelectorAll(".online")
+            .forEach(element => {
+
+                element.textContent =
+                    "Online • Returning Home";
+
+            });
+
+
+        showNotification(
+            "🏠 Rover returning home"
+        );
+
+    }
+
+
+
+    /* =====================================
+       NOTIFICATION
+    ===================================== */
+
+    function showNotification(message) {
+
+        const notification =
+            document.createElement("div");
+
+
+        notification.textContent =
+            message;
+
+
+        notification.style.position =
+            "fixed";
+
+
+        notification.style.right =
+            "25px";
+
+
+        notification.style.bottom =
+            "25px";
+
+
+        notification.style.padding =
+            "14px 18px";
+
+
+        notification.style.background =
+            "#17221b";
+
+
+        notification.style.color =
+            "white";
+
+
+        notification.style.borderRadius =
+            "10px";
+
+
+        notification.style.zIndex =
+            "9999";
+
+
+        document.body.appendChild(
+            notification
+        );
+
+
+        setTimeout(() => {
+
+            notification.remove();
+
+        }, 3000);
+
+    }
+
+
+
+    /* =====================================
+       ALERT
+    ===================================== */
+
+    function showAlert() {
+
+        showSectionById("alerts");
+
+    }
+
+
+
+    /* =====================================
+       LOGOUT
+    ===================================== */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "agroRoverLoggedIn"
+        );
+
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+
+    /* =====================================
+       DATE
+    ===================================== */
+
+    const dateElement =
+        document.getElementById(
+            "currentDate"
+        );
+
+
+    if (dateElement) {
+
+        const today =
+            new Date();
+
+
+        dateElement.textContent =
+            today.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
